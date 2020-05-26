@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
+
 #define SIZE 20000003;
 
 typedef struct hashTable{
@@ -19,12 +21,14 @@ typedef struct student {
 
 } student_t;
 
-void new_HashTable(int size, char *file_name){
+HashTable_t* new_HashTable(char file_name[21]){
     HashTable_t *new = malloc(sizeof(HashTable_t));
-    new->maxSize = size;
+    new->maxSize = SIZE;
     if(fopen(file_name, "r+") == NULL)
         new->ref = fopen(file_name, "w+");
 
+    return new;
+    
 }
 
 student_t *new_student(char *id, char *country){
@@ -34,6 +38,7 @@ student_t *new_student(char *id, char *country){
     new->student_done = false;
     new->student_left = false;
     new->invalid_position = true;
+
     return new;
 }
 
@@ -44,15 +49,39 @@ int hashCode(const char *str) {
     return hash % SIZE;
 }
 
-bool insert(char *id, char *country, HashTable_t hashTable) {
-    
+int position_process(char *id, char *country)
+{
 
 
+
+/*
+    if()
+    {
+
+    }
+*/
+
+    //return hash;
+}
+
+int aux_func(int n)
+{
+    return n*n;
+}
+
+bool insert_hashtable(char *id, char *cod) {
+
+    return false;  
+  
 }
 
 int main(int argc, char const *argv[])
 {
-    new_HashTable(20000003, "data.bin");
+    HashTable_t *alunos = new_HashTable("teste.dat");
+
+    
+
+
 
     return 0;
 }

@@ -5,9 +5,10 @@
 
 void insert_student(HashTable_t alunos,char identi[7], char cod[3])
 {
-    //nada ou
-    printf("+ estudante %s existe",identi);
-    //Se já existir um estudante com o identificador dado.
+    if(insert_hashtable(identi,cod)!=true)
+    {
+        printf("+ estudante %s existe",identi);
+    }
     
 }
 
@@ -75,30 +76,30 @@ int main(int argc, char const *argv[])
         {
             scanf("%s",&identi);
             printf("%s",identi);
+            remove_student(alunos,identi);
 
         }
         else if (operation=='T')
         {
             scanf("%s %s",&identi);
             printf("%s",identi);
+            set_done(alunos,identi);
             
         }
         else if (operation=='A')
         {
             scanf("%s",&identi);
             printf("%s",identi);
-
-        }
-        else if (operation=='A')
-        {
-            scanf("%s",&identi);
-            printf("%s",identi);
-
+            set_leave(alunos,identi);
         }
         else if (operation=='P')
         {
             scanf("%s",&cod);
             printf("%s",cod);
+        }
+        else if (operation=='X')
+        {
+            break;
         }
         else
         {
