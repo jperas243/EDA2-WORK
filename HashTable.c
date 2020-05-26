@@ -24,16 +24,17 @@ void new_HashTable(int size, char *file_name){
     new->maxSize = size;
     if(fopen(file_name, "r+") == NULL)
         new->ref = fopen(file_name, "w+");
-    
+
 }
 
-void new_student(char *id, char *country){
+student_t *new_student(char *id, char *country){
     student_t *new = malloc(sizeof(student_t));
     new->student_id = id;
     new->student_country = country;
     new->student_done = false;
     new->student_left = false;
     new->invalid_position = true;
+    return new;
 }
 
 int hashCode(const char *str) {
@@ -43,13 +44,15 @@ int hashCode(const char *str) {
     return hash % SIZE;
 }
 
-bool insert(char *id, char *country) {
+bool insert(char *id, char *country, HashTable_t hashTable) {
     
-  
+
+
 }
 
 int main(int argc, char const *argv[])
 {
+    new_HashTable(20000003, "data.bin");
 
     return 0;
 }
