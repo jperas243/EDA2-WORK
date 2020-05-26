@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "HashTable.c"
 
+
 void insert_student(HashTable_t alunos,char identi[7], char cod[3])
 {
     //nada ou
