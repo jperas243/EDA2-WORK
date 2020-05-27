@@ -98,7 +98,7 @@ void set_leave(HashTable_t *table,student_t student)
     }
 }
 
-void get_stats_from(HashTable_t countries,char *country)
+void get_stats_from(HashTable_t table,char *country)
 {
     //nada ou 
     //printf("+ %s - correntes: %d, diplomados: %d, abandonaram: %d, total: %d",cod,...);
@@ -158,6 +158,8 @@ int main(int argc, char const *argv[])
         else if (operation=='P')
         {
             scanf("%s",country);
+            get_stats_from(alunos,country);
+
         }
         else if (operation=='X')
         {

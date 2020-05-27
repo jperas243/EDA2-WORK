@@ -4,13 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define SIZE 20000003;
+#define MAX_SIZE_STUDENTS 20000003;
+#define MAX_SIZE_COUNTRIES 401;
 
-typedef struct hashTable{
-    int maxSize;
-    FILE *ref;
-
-}HashTable_t;
 
 typedef struct country
 {
@@ -18,6 +14,17 @@ typedef struct country
     long num_total_students,num_active_students, num_done_students,num_left_students; 
 
 } country_t;
+
+typedef struct hashTable{
+    
+    FILE *ref;
+    long offset_countries;
+    long offset_lista;
+    long maxSize_students;
+    long maxSize_countries;
+
+
+}HashTable_t;
 
 typedef struct student {
 
@@ -30,18 +37,17 @@ typedef struct student {
 } student_t;
 
 
-
-
 HashTable_t* new_HashTable(char file_name[21]){
     
     HashTable_t *new = malloc(sizeof(HashTable_t));
-    new->maxSize = SIZE;
+    new->maxSize_students = MAX_SIZE_STUDENTS;
+    new->maxSize_countries = MAX_SIZE_COUNTRIES;
+    new->offset_countries = sizeof(struct student) * SIZE;
     new->ref = fopen(file_name, "r+");
     if( new->ref== NULL)
         new->ref = fopen(file_name, "w+");
 
     return new;
-    
 }
 
 /*
@@ -66,6 +72,8 @@ unsigned long hash(char *str)
         
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
     }
+
+
     return hash%SIZE;
 }
 
@@ -74,9 +82,9 @@ long aux_func(int n)
     return n*n;
 }
 
-long position_process(HashTable_t *table,char *id)
+long position_process(HashTable_t *table,char *name)
 {
-    long position = (long)hash(id);
+    long position = (long)hash(name);
     int counter = 1;
     student_t atual;
 
@@ -88,7 +96,7 @@ long position_process(HashTable_t *table,char *id)
     fseek(table->ref, offset, SEEK_SET);
     fread(&atual, sizeof(struct student), 1, table->ref);
 
-    if (strcmp(atual.id,id)==0 && atual.invalid_position==true)
+    if (strcmp(atual.id,name)==0 && atual.invalid_position==true)
     {
         return -1;
     }
@@ -106,15 +114,11 @@ long position_process(HashTable_t *table,char *id)
         fread(&atual, sizeof(struct student), 1, table->ref);
         counter++;
 
-        printf("%s %s\n",atual.id,id);
-        if (strcmp(atual.id,id)==0 && atual.invalid_position==true)
+        printf("%s %s\n",atual.id,name);
+        if (strcmp(atual.id,name)==0 && atual.invalid_position==true)
         {
             return -1;
         }
-
-
-        //printf("%s %ld\n",atual.id,position);
-        //sleep(2);
     }
 
     return position;
