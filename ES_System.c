@@ -98,11 +98,9 @@ void set_leave(HashTable_t *table,student_t student)
     }
 }
 
-void get_stats_from(HashTable_t table,char *country)
+void get_stats_from(HashTable_t *table,char *country)
 {
-    //nada ou 
-    //printf("+ %s - correntes: %d, diplomados: %d, abandonaram: %d, total: %d",cod,...);
-    //Se não existir um estudante com o identificador dado.
+    
 
     printf("+ sem dados sobre %s",country);
     //Se não existir nenhum estudante associado ao paı́s com o código dado.
@@ -158,7 +156,7 @@ int main(int argc, char const *argv[])
         else if (operation=='P')
         {
             scanf("%s",country);
-            get_stats_from(alunos,country);
+            get_stats_from(table,country);
 
         }
         else if (operation=='X')

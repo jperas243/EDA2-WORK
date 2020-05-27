@@ -6,14 +6,6 @@
 
 #define SIZE 20000003;
 
-
-typedef struct country
-{
-    char *country_name; 
-    long num_total_students,num_active_students, num_done_students,num_left_students; 
-
-} country_t;
-
 typedef struct hashTable{
     
     FILE *ref;

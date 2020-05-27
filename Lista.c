@@ -1,96 +1,118 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include "HashTable.c"
 
-#define LISTSAVE "countries.bin"
+//#define LISTSAVE "countries.bin"
+
+typedef struct country
+{
+    char country_name[3]; 
+    long num_total_students,
+        num_active_students, 
+        num_done_students,
+        num_left_students; 
+
+} country_t;
 
 
 typedef struct node {
-    country_t *country;
+    
+    country_t country;
     struct node *next ;
+
 } node_t;
 
 typedef struct list {
+   
     node_t *header;
+
 }list_t;
 
+country_t *newCountry()
+{
+    country_t *new = malloc(sizeof(country_t));
+    return new;
+}
+
 node_t *newNode(){
+    
     node_t *new = malloc(sizeof(node_t));
     return new;
 }
 
 list_t *newList(){
+    
     list_t *new = malloc(sizeof(list_t));
-    node_t *header_new = newNode();
-    new->header = header_new;
+    new->header = newNode();
     return new;
 }
+
 void list_print(list_t *list, char *cod) {
+    
     node_t *current = newNode();
     current = list->header->next;
-    while (current)
+    while (current!=NULL)
     {
-        if (strcmp(current->country->country_name, cod) == 0)
+        if (strcmp(current->country.country_name, cod) == 0)
         {
             printf("+ %s - correntes: %li, diplomandos: %li, abandonaram: %li, total: %li\n",
-            cod, current->country->num_active_students, current->country->num_done_students, 
-            current->country->num_left_students, current->country->num_total_students);
+            cod, current->country.num_active_students, current->country.num_done_students, 
+            current->country.num_left_students, current->country.num_total_students);
         }
+        current=current->next;
+
     }
 }
 
-node_t *list_search(list_t *list, char *cod){
-    node_t *current = newNode();
-    current = list->header->next;
-    if (list->header->next == NULL)
+bool list_search(list_t *list, char *cod){
+    
+    node_t *current = list->header->next;
+
+    if (current==NULL)
     {
-        return NULL;
+        return false;
+    }
+
+    while (current!=NULL)
+    {
+        if (strcmp(current->country.country_name, cod) == 0)
+        {
+            return true;
+        }
+        current=current->next;
+        
     }
     
-    while (current->next != NULL)
-    {
-        printf("%s %s\n", current->country->country_name, cod);
-        sleep(2);
-        if (strcmp(current->country->country_name, cod) == 0)
-        {
-            printf("ola");
-            return current;
-        }
-        current = current->next;
-    }
-    return NULL;
+    return false;
 }
 
 void list_insert(list_t *list, char *cod){
   
-    if (list_search(list, cod) == NULL)
+    if (list_search(list,cod)==false)
     {
-        node_t *newValue = newNode();
-        newValue->country->country_name = cod;
-        newValue->country->num_active_students = 1;
-        newValue->country->num_done_students = 0; 
-        newValue->country->num_left_students = 0;
-        newValue->country->num_total_students = 1; 
+        node_t *new = newNode();
+        strcpy(new->country.country_name,cod);
+        new->country.num_active_students=1;
+        new->country.num_done_students=0;
+        new->country.num_left_students=0;
+        new->country.num_total_students=1;
 
-        node_t *current =list->header;
-
-        while (current->next != NULL)
-        {
-            current = current->next;
-        }
+        new->next=list->header->next;
+        list->header->next=new;
+    }
     
-        current->next = newValue;        
-    }    
 }
 
 int main(int argc, char const *argv[])
 {
     list_t *list = newList();
+    
+    printf("%d",list_search(list,"PT"));
     list_insert(list, "PT");
-    //list_print(list, "PT");
+    printf("%d",list_search(list,"PT"));
+
+    list_print(list, "PT");
     return 0;
 }
 
