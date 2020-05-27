@@ -9,14 +9,14 @@ typedef struct hashTable{
     int maxSize;
     FILE *ref;
 
- }HashTable_t;
+}HashTable_t;
 
 typedef struct student {
 
-    char student_id[7]; 
-    char student_country[3];
-    bool student_done;
-    bool student_left;
+    char id[7]; 
+    char country[3];
+    bool done;
+    bool left;
     bool invalid_position;
 
 } student_t;
@@ -34,24 +34,15 @@ HashTable_t* new_HashTable(char file_name[21]){
 }
 
 
-int hashCode(const char *str) {
-    int hash = 0;
-    for (int i = 0; i < strlen(str); i++)
-        hash = 31 * hash + str[i];
-    return hash % SIZE;
-}
-
-int position_process(char *id, char *country)
+unsigned long hash(char *str)
 {
+    unsigned long hash = 5381;
+    int c;
 
-/*
-    if()
-    {
+    while (c = *str++)
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
-    }
-*/
-
-    //return hash;
+    return hash%SIZE;
 }
 
 int aux_func(int n)
@@ -59,9 +50,63 @@ int aux_func(int n)
     return n*n;
 }
 
-bool insert_hashtable(HashTable_t table,char *id, char *cod) {
+int position_process_id(HashTable_t *table,char *id)
+{
+    int position = hash(id);
+    int counter = 1;
+    student_t atual;
 
-    //fread();
+    if (position<0){
+        position=0-position;
+    }
+
+    int offset = sizeof(struct student)*position;
+    fseek(table->ref, offset, SEEK_SET);
+    fread(&atual, sizeof(struct student), 1, table->ref);
+
+    while (atual.invalid_position)
+    {
+        if (position<0){
+            position=0-position;
+        }
+        
+        position=(position+aux_func(counter))%SIZE;
+        
+        int offset = sizeof(struct student)*position;
+        fseek(table->ref, offset, SEEK_SET);
+        fread(&atual, sizeof(struct student), 1, table->ref);
+        counter++;
+    }
+
+    return position;
+    
+}
+
+
+bool insert_hashtable(HashTable_t *table,student_t student) {
+
+    int hash = position_process_id(table,student.id);
+    printf("%d",hash);
+    
+    if (hash==-1)
+    {
+        return false;
+    }
+    else
+    {
+        student.done=false;
+        student.left=false;
+        student.invalid_position=true;
+
+        int offset = sizeof(struct student)*hash;
+        fseek(table->ref, offset, SEEK_SET);
+        fwrite(&student, sizeof(struct student), 1, table->ref);
+
+        return true;
+    }
+    
+    
+
     return false;  
   
 }
@@ -76,31 +121,34 @@ int find_hashtable(HashTable_t table,char *id)
     return 0;
 }
 
+/*
+
 int main(int argc, char const *argv[])
 {
-    //HashTable_t *alunos = new_HashTable("teste.dat");
-    FILE *ref = fopen("teste.dat","wb+");
+    HashTable_t *alunos = new_HashTable("teste.dat");
 
     student_t aluno1;
-    strcpy(aluno1.student_id,"ABFC12");
+    strcpy(aluno1.id,"ABFC12");
     student_t aluno2;
-    strcpy(aluno2.student_id,"ABFC30");
+    strcpy(aluno2.id,"ABFC30");
 
 
 
     int offset = sizeof(struct student)*0;
-    fseek(ref, offset, SEEK_SET);
+    fseek(alunos->ref, offset, SEEK_SET);
     
-    fwrite(&aluno1,sizeof(struct student),1,ref);
+    fwrite(&aluno1,sizeof(struct student),1,alunos->ref);
 
 
     offset = sizeof(struct student)*0;
-    fseek(ref, offset, SEEK_SET);
+    fseek(alunos->ref, offset, SEEK_SET);
 
-    fread(&aluno2, sizeof(struct student), 1, ref);
+    fread(&aluno2, sizeof(struct student), 1, alunos->ref);
 
-    printf("%s\n",aluno2.student_id);
+    printf("%s\n",aluno2.id);
 
 
     return 0;
 }
+
+*/

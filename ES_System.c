@@ -3,45 +3,46 @@
 #include "HashTable.c"
 
 
-void insert_student(HashTable_t students,char *id, char *country)
+void insert_student(HashTable_t *table,student_t student)
 {
-    if(insert_hashtable(id,country)!=true)
+    printf("ola\n");
+    if(insert_hashtable(table,student)!=true)
     {
-        printf("+ estudante %s existe",id);
+        printf("+ estudante %s existe",student.id);
     }
     
 }
 
-void remove_student(HashTable_t students,char *id)
+void remove_student(HashTable_t *table,student_t student)
 {
     //nada ou 
-    printf("+ estudante %s inexistente",id);
+    printf("+ estudante %s inexistente",student.id);
     //Se não existir um estudante com o identificador dado.
-    printf("+ estudante %s terminou",id);
+    printf("+ estudante %s terminou",student.id);
     //Se o estudante a que o identificador corresponde já tiver terminado o curso.
-    printf("+ estudante %s terminou",id);
+    printf("+ estudante %s terminou",student.id);
     //Se o estudante a que o identificador corresponde tiver abandonado os estudos.
 }
 
-void set_done(HashTable_t students,char *id)
+void set_done(HashTable_t *table,student_t student)
 {
     //nada ou 
-    printf("+ estudante %s inexistente",id);
+    printf("+ estudante %s inexistente",student.id);
     //Se não existir um estudante com o identificador dado.
-    printf("+ estudante %s terminou",id);
+    printf("+ estudante %s terminou",student.id);
     //Se o estudante a que o identificador corresponde já tiver terminado o curso.
-    printf("+ estudante %s terminou",id);
+    printf("+ estudante %s terminou",student.id);
     //Se o estudante a que o identificador corresponde tiver abandonado os estudos.
 }
 
-void set_leave(HashTable_t students,char *id)
+void set_leave(HashTable_t *table,student_t student)
 {
     //nada ou 
-    printf("+ estudante %s inexistente",id);
+    printf("+ estudante %s inexistente",student.id);
     //Se não existir um estudante com o identificador dado.
-    printf("+ estudante %s terminou",id);
+    printf("+ estudante %s terminou",student.id);
     //Se o estudante a que o identificador corresponde já tiver terminado o curso.
-    printf("+ estudante %s terminou",id);
+    printf("+ estudante %s terminou",student.id);
     //Se o estudante a que o identificador corresponde tiver abandonado os estudos.
 }
 
@@ -61,36 +62,49 @@ int main(int argc, char const *argv[])
     char operation;
     char id[7]; 
     char country[3];
-    HashTable_t students;
+    HashTable_t *table = new_HashTable("alunos.dat");
+    student_t current_student;
 
     while (scanf("%c",&operation)!=EOF)
     {
         if (operation=='I')
         {
             scanf("%s %s",&id,&country);
-            printf("%s %s",id,country);
-            insert_student(students,id,country);
+
+            strcpy(current_student.id,id);
+            strcpy(current_student.id,country);
+
+            insert_student(table,current_student);
 
         }
         else if (operation=='R')
         {
             scanf("%s",&id);
             printf("%s",id);
-            remove_student(students,id);
+
+            strcpy(current_student.id,id);
+
+            remove_student(table,current_student);
 
         }
         else if (operation=='T')
         {
             scanf("%s %s",&id);
             printf("%s",id);
-            set_done(students,id);
+
+            strcpy(current_student.id,id);
+
+            set_done(table,current_student);
             
         }
         else if (operation=='A')
         {
             scanf("%s",&id);
             printf("%s",id);
-            set_leave(students,id);
+
+            strcpy(current_student.id,id);
+
+            set_leave(table,current_student);
         }
         else if (operation=='P')
         {

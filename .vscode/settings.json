@@ -9,6 +9,7 @@
         "iterator": "c",
         "string_view": "c",
         "initializer_list": "c",
-        "unordered_map": "c"
+        "unordered_map": "c",
+        "functional": "c"
     }
 }
