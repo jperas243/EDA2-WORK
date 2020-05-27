@@ -98,7 +98,7 @@ long position_process(HashTable_t *table,char *name)
         fread(&atual, sizeof(struct student), 1, table->ref);
         counter++;
 
-        printf("%s %s\n",atual.id,name);
+        //printf("%s %s\n",atual.id,name);
         if (strcmp(atual.id,name)==0 && atual.invalid_position==true)
         {
             return -1;
@@ -113,7 +113,7 @@ long position_process(HashTable_t *table,char *name)
 bool insert_hashtable(HashTable_t *table,student_t student) {
 
     int hash = position_process(table,student.id);
-    printf("%d\n",hash);
+    //printf("%d\n",hash);
     
     if (hash==-1)
     {
@@ -152,8 +152,7 @@ int find_hashtable(HashTable_t *table,char *id)
     fseek(table->ref, offset, SEEK_SET);
     fread(&atual, sizeof(struct student), 1, table->ref);
 
-    printf("%li %s\n",position,atual.id);
-    sleep(2);
+    //printf("%li %s\n",position,atual.id);
     if (strcmp(atual.id,id)==0 && atual.invalid_position==true)
     {
         return position;
@@ -172,8 +171,7 @@ int find_hashtable(HashTable_t *table,char *id)
         fread(&atual, sizeof(struct student), 1, table->ref);
         counter++;
 
-        printf("%li %s\n",position,atual.id);
-        sleep(2);
+        //printf("%li %s\n",position,atual.id);
 
         if (strcmp(atual.id,id)==0 && atual.invalid_position==true)
         {
@@ -187,7 +185,7 @@ int remove_hashtable(HashTable_t *table,char *id)
 {
     int position = find_hashtable(table,id);
     student_t to_remove;
-    printf("%d\n",position);
+    //printf("%d\n",position);
 
     long offset = sizeof(struct student)*position;
     fseek(table->ref, offset, SEEK_SET);
