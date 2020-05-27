@@ -4,13 +4,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAX_SIZE_STUDENTS 20000003;
-#define MAX_SIZE_COUNTRIES 401;
+#define SIZE 20000003;
 
 
 typedef struct country
 {
-    char country_name[3]; 
+    char *country_name; 
     long num_total_students,num_active_students, num_done_students,num_left_students; 
 
 } country_t;
@@ -18,12 +17,7 @@ typedef struct country
 typedef struct hashTable{
     
     FILE *ref;
-    long offset_countries;
-    long offset_lista;
-    long maxSize_students;
-    long maxSize_countries;
-
-
+    long maxSize;
 }HashTable_t;
 
 typedef struct student {
@@ -40,9 +34,7 @@ typedef struct student {
 HashTable_t* new_HashTable(char file_name[21]){
     
     HashTable_t *new = malloc(sizeof(HashTable_t));
-    new->maxSize_students = MAX_SIZE_STUDENTS;
-    new->maxSize_countries = MAX_SIZE_COUNTRIES;
-    new->offset_countries = sizeof(struct student) * SIZE;
+    new->maxSize = SIZE;
     new->ref = fopen(file_name, "r+");
     if( new->ref== NULL)
         new->ref = fopen(file_name, "w+");
