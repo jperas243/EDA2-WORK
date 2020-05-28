@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "Lista.h"
+#include "Lista_MEM.h"
 
 country_t *newCountry()
 {
@@ -26,6 +27,8 @@ list_t *newList(){
     return new;
 }
 
+
+
 void list_print(list_t *list, char *cod) {
     
     node_t *current = newNode();
@@ -36,7 +39,7 @@ void list_print(list_t *list, char *cod) {
         {
             if (current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students!=0)
             {
-                printf("+ %s - correntes: %li, diplomandos: %li, abandonaram: %li, total: %li\n",
+                printf("+ %s - correntes: %li, diplomados: %li, abandonaram: %li, total: %li\n",
                 cod, current->country.num_active_students, current->country.num_done_students, current->country.num_left_students,
                 current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students);
             }
@@ -49,6 +52,29 @@ void list_print(list_t *list, char *cod) {
         current=current->next;
 
     }
+}
+
+void list_print_all(list_t *list) {
+    
+    printf("RAM:");
+    node_t *current = list->header->next;
+    while (current!=NULL)
+    {
+        if (current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students!=0)
+        {
+            printf("+ %s - correntes: %li, diplomandos: %li, abandonaram: %li, total: %li\n",
+            current->country.country_name, current->country.num_active_students, current->country.num_done_students, current->country.num_left_students,
+            current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students);
+        }
+        else
+        {
+            printf("+ sem dados sobre %s\n",current->country.country_name);
+        }
+        current=current->next;
+
+    }
+
+    free(current);
 }
 
 void list_insert(list_t *list, char *cod){
@@ -133,7 +159,7 @@ void list_print_content(list_t *lista)
 {
     node_t *current = lista->header->next;
 
-    printf("[");
+    printf("\nRAM:[");
     while (current!=NULL)
     {
         list_print(lista,current->country.country_name);

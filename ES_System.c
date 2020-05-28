@@ -135,11 +135,12 @@ void set_leave(HashTable_t *table,list_t *lista,student_t student)
 
 void get_stats_from(list_t *lista,char *country)
 {
-
+    sleep(5);
     node_t *country_node = list_find(lista,country);
     if (country_node==NULL)
     {
         printf("+ sem dados sobre %s\n",country);
+        sleep(2);
     }
     list_print(lista,country);
     
@@ -148,17 +149,34 @@ void get_stats_from(list_t *lista,char *country)
 
 void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
 {
-    ListMEM_newfile(lista_MEM,"countries.dat");
-
     node_t *current_node = lista->header->next;
+    int i=1;
+
+    //list_print_content(lista);
+
     
     while (current_node!=NULL)
     {
-        ListMEM_insert(lista_MEM,current_node);
+        country_t current_country = current_node->country;
+        
+        int offset = sizeof(struct country)*i;
+        fseek(lista_MEM->ref, offset, SEEK_SET);
+        fwrite(&current_country, sizeof(struct country), 1, lista_MEM->ref);
         current_node=current_node->next;
+        i++;
+
     }
 
+    lista_MEM->size=lista->size--;
+
+    ListMEM_saveSize(lista_MEM,i);
+    //printf("size mem guardado:%d\n",i);
+    //lista_MEM->size=lista_MEM->size+1;
+    //ListMEM_printf(lista_MEM);
+
     free(current_node);
+
+
 }
 
 
@@ -177,6 +195,7 @@ int main(int argc, char const *argv[])
 
     //load dos paises
     ListMEM_send_to(lista_MEM,lista);
+
 
     while (scanf("%c",&operation)!=EOF)
     {

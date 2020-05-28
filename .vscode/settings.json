@@ -10,6 +10,8 @@
         "string_view": "c",
         "initializer_list": "c",
         "unordered_map": "c",
-        "functional": "c"
+        "functional": "c",
+        "utility": "c",
+        "valarray": "c"
     }
 }
