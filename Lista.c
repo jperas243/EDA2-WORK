@@ -24,6 +24,7 @@ typedef struct node {
 typedef struct list {
    
     node_t *header;
+    int size;
 
 }list_t;
 
@@ -43,6 +44,7 @@ list_t *newList(){
     
     list_t *new = malloc(sizeof(list_t));
     new->header = newNode();
+    new->size = 0;
     return new;
 }
 
@@ -82,6 +84,16 @@ void list_insert(list_t *list, char *cod){
 
     new->next=list->header->next;
     list->header->next=new;
+
+    list->size++;
+    
+}
+
+void list_insert_node(list_t *list, node_t *country){
+  
+    country->next=list->header->next;
+    list->header->next=country;
+    list->size++;
     
 }
 

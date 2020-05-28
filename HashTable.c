@@ -10,6 +10,7 @@ typedef struct hashTable{
     
     FILE *ref;
     long maxSize;
+
 }HashTable_t;
 
 typedef struct student {
@@ -34,17 +35,6 @@ HashTable_t* new_HashTable(char file_name[21]){
     return new;
 }
 
-/*
-void disk_read(struct estrutura)
-{
-
-}
-*/
-
-void disk_write()
-{
-
-}
 
 
 unsigned long hash(char *str)
@@ -52,7 +42,7 @@ unsigned long hash(char *str)
     unsigned long hash = 5381;
     int c;
 
-    while (c = *str++){
+    while ((c = *str++)){
         
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
     }
@@ -232,11 +222,6 @@ int main(int argc, char const *argv[])
     printf("%d----\n",insert_hashtable(alunos,aluno1));
     printf("%d----\n",find_hashtable(alunos,"ABFC12"));
 
-
-
-
-
     return 0;
 }
 */
-

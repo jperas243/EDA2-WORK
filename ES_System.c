@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "HashTable.c"
-#include "Lista.c"
+#include "HashTable.h"
+#include "Lista.h"
+#include "Lista_MEM.h"
+
 
 
 void insert_student(HashTable_t *table,list_t *lista,student_t student)
@@ -58,7 +60,7 @@ void set_done(HashTable_t *table,list_t *lista,student_t student)
 {
 
     long position = find_hashtable(table,student.id);
-    printf("%d",position);
+    //printf("%d",position);
     student_t to_find;
 
     long offset = sizeof(struct student)*position;
@@ -84,7 +86,7 @@ void set_done(HashTable_t *table,list_t *lista,student_t student)
         fseek(table->ref, offset, SEEK_SET);
         fwrite(&to_find, sizeof(struct student), 1, table->ref);
 
-        printf("%d\n",to_find.country);
+        //printf("%d\n",to_find.country);
         node_t *country_node = list_find(lista,to_find.country);
         increment_of(country_node,"done");
         decrement_of(country_node,"active");
@@ -138,11 +140,26 @@ void get_stats_from(list_t *lista,char *country)
     {
         printf("+ sem dados sobre %s\n",country);
     }
-    
     list_print(lista,country);
     
     
 }
+
+void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
+{
+    ListMEM_newfile(lista_MEM,"countries.dat");
+
+    node_t *current_node = lista->header->next;
+    
+    while (current_node!=NULL)
+    {
+        ListMEM_insert(lista_MEM,current_node);
+        current_node=current_node->next;
+    }
+
+    free(current_node);
+}
+
 
 int main(int argc, char const *argv[])
 {
@@ -152,8 +169,13 @@ int main(int argc, char const *argv[])
     char country[3];
 
     HashTable_t *table = new_HashTable("alunos.dat");
+    Lista_MEM_t *lista_MEM = new_Lista_MEM("countries.dat");
+
     list_t *lista = newList();
     student_t current_student;
+
+    //load dos paises
+    ListMEM_send_to(lista_MEM,lista);
 
     while (scanf("%c",&operation)!=EOF)
     {
@@ -202,6 +224,7 @@ int main(int argc, char const *argv[])
         else if (operation=='X')
         {
             //guardar os paises no ficheiro
+            save_countries(lista_MEM,lista);
             break;
         }
     }
