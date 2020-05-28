@@ -3,19 +3,12 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
-#include "Lista.c"
+
 #include "Lista.h"
+#include "Lista_MEM.h"
 
 #define SIZE_LIST 401
 
-typedef struct Lista_MEM
-{
-    FILE *ref;
-    char *file_name;
-    long maxSize;
-    int index;
-
-}Lista_MEM_t;
 
 
 Lista_MEM_t* new_Lista_MEM(char file_name[21]){

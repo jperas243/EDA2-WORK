@@ -3,26 +3,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "HashTable.h"
 
 #define SIZE 20000003;
-
-typedef struct hashTable{
-    
-    FILE *ref;
-    long maxSize;
-
-}HashTable_t;
-
-typedef struct student {
-
-    char id[7]; 
-    char country[3];
-    bool done;
-    bool left;
-    bool invalid_position;
-
-} student_t;
-
 
 HashTable_t* new_HashTable(char file_name[21]){
     

@@ -4,29 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-typedef struct country
-{
-    char country_name[3]; 
-    long num_active_students, 
-        num_done_students,
-        num_left_students; 
-
-} country_t;
-
-
-typedef struct node {
-    
-    country_t country;
-    struct node *next ;
-
-} node_t;
-
-typedef struct list {
-   
-    node_t *header;
-    int size;
-
-}list_t;
+#include "Lista.h"
 
 country_t *newCountry()
 {
