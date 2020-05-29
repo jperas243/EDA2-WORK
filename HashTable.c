@@ -3,9 +3,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "HashTable.h"
 
-#define SIZE 20000003;
+#define SIZE 20000003
 
 HashTable_t* new_HashTable(char file_name[21]){
     
@@ -20,17 +21,16 @@ HashTable_t* new_HashTable(char file_name[21]){
 
 
 
-unsigned long hash(char *str)
+long hash(char *str)
 {
-    unsigned long hash = 5381;
-    int c;
-
-    while ((c = *str++)){
-        
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    long hash = 0;
+    int length=6;
+    
+    for (int i = 0; i < 6; i++)
+    {
+        hash = + hash + (str[i]-48)*pow(23,length);
+        length--;
     }
-
-
     return hash%SIZE;
 }
 
@@ -41,7 +41,7 @@ long aux_func(int n)
 
 long position_process(HashTable_t *table,char *name)
 {
-    long position = (long)hash(name);
+    long position = hash(name);
     int counter = 1;
     student_t atual;
 
@@ -77,7 +77,7 @@ long position_process(HashTable_t *table,char *name)
             return -1;
         }
     }
-
+    //printf("ID:%s,POSITION:%li \n",name,position);
     return position;
     
 }
@@ -111,15 +111,11 @@ bool insert_hashtable(HashTable_t *table,student_t student) {
   
 }
 
-int find_hashtable(HashTable_t *table,char *id)
+int find_hashtable(HashTable_t *table,char *id) //done,left,remove
 {
     long position = (long)hash(id);
     int counter = 1;
     student_t atual;
-
-    if (position<0){
-        position=0-position;
-    }
 
     int offset = sizeof(struct student)*position;
     fseek(table->ref, offset, SEEK_SET);
@@ -128,6 +124,26 @@ int find_hashtable(HashTable_t *table,char *id)
     //printf("%li %s\n",position,atual.id);
     if (strcmp(atual.id,id)==0 && atual.invalid_position==true)
     {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         return position;
     }
     
@@ -151,6 +167,9 @@ int find_hashtable(HashTable_t *table,char *id)
             return position;
         }
     }
+
+    
+
     return -1;
 }
 

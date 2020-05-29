@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
 
 typedef struct hashTable{
     
@@ -26,7 +28,7 @@ typedef struct student {
 
 struct hashTable* new_HashTable(char file_name[21]);
 
-unsigned long hash(char *str);
+long hash(char *str);
 long aux_func(int n);
 long position_process(HashTable_t *table,char *name);
 bool insert_hashtable(HashTable_t *table,student_t student);
