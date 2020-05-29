@@ -24,6 +24,7 @@ typedef struct student {
     bool done;
     bool left;
     bool invalid_position;
+    bool removed;
 
 }student_t;
 
