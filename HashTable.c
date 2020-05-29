@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+
 #include "HashTable.h"
 #include "Lista.h"
 
@@ -56,6 +57,7 @@ long position_process(HashTable_t *table,char *name)
 
     if (strcmp(atual.id,name)==0 && atual.invalid_position==true)
     {
+        
         return -1;
     }
     

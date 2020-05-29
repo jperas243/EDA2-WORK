@@ -116,7 +116,7 @@ void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
     node_t *current_node = lista->header->next;
     int i=1;
 
-    list_print_content(lista);
+    //list_print_content(lista);
 
     
     while (current_node!=NULL)
@@ -135,8 +135,8 @@ void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
 
     ListMEM_saveSize(lista_MEM,i);
     //printf("size mem guardado:%d\n",i);
-    lista_MEM->size=lista_MEM->size+1;
-    ListMEM_printf(lista_MEM);
+    //lista_MEM->size=lista_MEM->size+1;
+    //ListMEM_printf(lista_MEM);
 
     free(current_node);
 

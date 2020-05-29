@@ -40,7 +40,7 @@ void ListMEM_send_to(Lista_MEM_t *lista,list_t *main_memory)
 {
     country_t current_country;
 
-    ListMEM_printf(lista);
+    //ListMEM_printf(lista);
 
     fseek(lista->ref, 0, SEEK_SET);
     fwrite(&lista->size, sizeof(int), 1, lista->ref);
@@ -58,7 +58,7 @@ void ListMEM_send_to(Lista_MEM_t *lista,list_t *main_memory)
         list_insert_node(main_memory,new_node);
     }
 
-    list_print_content(main_memory);
+    //list_print_content(main_memory);
 
     
 }
