@@ -121,7 +121,7 @@ bool insert_hashtable(HashTable_t *table,student_t student) {
         long offset = sizeof(struct student)*hash;
         fseek(table->ref, offset, SEEK_SET);
         fwrite(&student, sizeof(struct student), 1, table->ref);
-
+        //printf("ID: %s, hash: %d\n", student.id, hash);
         return true;
     }
     return false;  
@@ -140,97 +140,100 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
     fread(&atual, sizeof(struct student), 1, table->ref);
     //printf("invalid %s: %d\n", atual.id, atual.invalid_position);
     while (atual.invalid_position)
-    {        //printf("Atual.id: %s\n", atual.id);
-        if (strcmp(atual.id,id) == 0)
-        {   
-            if (strcmp(option, "remove") == 0)
-            { 
-                //printf("Atual.done: %d\n", atual.done);
-                //printf("Atual.id: %d\n", atual.left);
-                if (atual.done==true)
-                {
-                    return -1; //terminou o curso
-                }
-                else if (atual.left==true)
-                {
-                    return -2; //abandonou o curso
-                }
-                else if (atual.removed==true)
-                {
-                    return -3; //abandonou o curso
-                }
-                else
-                {   
-                    atual.removed = true;
-                    fseek(table->ref, offset, SEEK_SET);
-                    fwrite(&atual, sizeof(struct student), 1, table->ref);  //sucesso
-                    node_t *current = list_find(lista, atual.country);
-                    decrement_of(current,"active");
-                    return 0;
-                }
-            }
-            else if (strcmp(option, "done") == 0)
+    {   
+        //printf("Atual.id: %s\n", atual.id);   
+        if (strcmp(option, "remove") == 0)
+        { 
+            //printf("Atual.done: %d\n", atual.done);
+            //printf("Atual.id: %d\n", atual.left);
+            if (atual.removed==true )
             {
-                //printf("done: %d", atual.done);
-                if (atual.done==true)
-                {
-                    return -1; //terminou o curso
-                }
-                else if (atual.left==true)
-                {
-                    return -2; //abandonou o curso
-                }
-                else if (atual.removed == true)
-                {
-                    return -3;
-                }
-                else //if(atual.removed == true) {return -3}
-                {
-                    atual.done=true;
-                    node_t *current = list_find(lista, atual.country);      
-                    decrement_of(current,"active");
-                    increment_of(current,"done");
-                    fseek(table->ref, offset, SEEK_SET);
-                    fwrite(&atual, sizeof(struct student), 1, table->ref);
-                    return 0;
-                }
+                printf("invalid %s: %d\n", atual.id, atual.invalid_position);
+                return -3;
             }
-            else if (strcmp(option, "left") == 0)
+            else if (atual.left==true)
             {
-                if (atual.done==true) //atual.removed == true
-                {
-                    return -1; //terminou o curso
-                }
-                else if (atual.left==true)
-                {
-                    return -2; //abandonou o curso
-                }
-                else if (atual.removed == true)
-                {
-                    return -3;
-                }
-                else
-                {
-                    atual.left=true;
-                    node_t *current = list_find(lista, atual.country);
-                    fseek(table->ref, offset, SEEK_SET);
-                    fwrite(&atual, sizeof(struct student), 1, table->ref);
-                    decrement_of(current,"active");
-                    increment_of(current,"left");
-                    return 0;
-                }
-            }            
+                return -2; //abandonou o curso
+            }
+            else if (atual.done==true)
+            {
+                return -1; //terminou o curso
+            }
+            else
+            {   
+                atual.removed = true;
+                node_t *current = list_find(lista, atual.country);
+                decrement_of(current,"active");
+                fseek(table->ref, offset, SEEK_SET);
+                fwrite(&atual, sizeof(struct student), 1, table->ref);  //sucesso
+                printf("invalid %s: %d\n", atual.id, atual.invalid_position);
+                return 0;
+            }
         }
+        else if (strcmp(option, "done") == 0)
+        {
+            //printf("done: %d", atual.done);
+            if (atual.removed==true )
+            {
+                printf("invalid1 %s: %d\n", atual.id, atual.invalid_position); 
+                return -3;
+            }
+            else if (atual.left==true)
+            {
+                return -2; //abandonou o curso
+            }
+            else if (atual.done==true)
+            {
+                return -1; //terminou o curso
+            }
+            else //if(atual.removed == true) {return -3}
+            {
+                atual.done=true;
+                node_t *current = list_find(lista, atual.country);      
+                decrement_of(current,"active");
+                increment_of(current,"done");
+                fseek(table->ref, offset, SEEK_SET);
+                fwrite(&atual, sizeof(struct student), 1, table->ref);
+                printf("invalid1 %s: %d\n", atual.id, atual.invalid_position);
+                return 0;
+            }
+        }
+        else if (strcmp(option, "left") == 0)
+        {
+            if (atual.removed==true )
+            {
+                printf("invalid2 %s: %d\n", atual.id, atual.invalid_position); 
+                return -3;
+            }
+            else if (atual.left==true)
+            {
+                return -2; //abandonou o curso
+            }
+            else if (atual.done==true)
+            {
+                return -1; //terminou o curso
+            }
+            else
+            {
+                atual.left=true;
+                node_t *current = list_find(lista, atual.country);
+                decrement_of(current,"active");
+                increment_of(current,"left");
+                fseek(table->ref, offset, SEEK_SET);
+                fwrite(&atual, sizeof(struct student), 1, table->ref);
+                printf("invalid2 %s: %d\n", atual.id, atual.invalid_position);
+                return 0;
+            }
+        }            
 
-        position=(position+aux_func(hash_aux_counter))%SIZE;
-        
-        long offset = sizeof(struct student)*position;
-        fseek(table->ref, offset, SEEK_SET);
-        fread(&atual, sizeof(struct student), 1, table->ref);
-        hash_aux_counter++;
-
+    position=(position+aux_func(hash_aux_counter))%SIZE;
+    
+    long offset = sizeof(struct student)*position;
+    fseek(table->ref, offset, SEEK_SET);
+    fread(&atual, sizeof(struct student), 1, table->ref);
+    hash_aux_counter++;
     }
-
+    printf("ola1\n");
     return -3; //aluno inexistente
 }
 
