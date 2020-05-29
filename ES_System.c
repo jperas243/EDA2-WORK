@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "HashTable.h"
 #include "Lista.h"
+#include "HashTable.h"
 #include "Lista_MEM.h"
 
 
@@ -31,28 +31,24 @@ void insert_student(HashTable_t *table,list_t *lista,student_t student)
 
 void remove_student(HashTable_t *table,list_t *lista,student_t student)
 {
-    int option = remove_hashtable(table,student.id);
-    //printf("%d",option);
-
-    if (option ==1)
+    unsigned int option = find_apply_hashtable(table,student.id, "remove", lista);
+    
+    if (option == 0)    //sucesso
     {
-        //sucesso
-        node_t *country_node = list_find(lista,student.country);
-        decrement_of(country_node,"active");
-        //list_print_content(lista);
-
     }
-    else if (option==0)
-    {
-        printf("+ estudante %s inexistente\n",student.id);
-    }
-    else if (option==-1)
+    else if (option == -1)
     {
         printf("+ estudante %s terminou\n",student.id);
+        
     }
-    else if (option==-2)
+    else if (option == -2)
     {
         printf("+ estudante %s abandonou\n",student.id);
+    }
+    else if (option == -3)
+    {
+        printf("+ estudante %s inexistente\n",student.id);
+        
     }
 
 }
@@ -60,91 +56,59 @@ void remove_student(HashTable_t *table,list_t *lista,student_t student)
 void set_done(HashTable_t *table,list_t *lista,student_t student)
 {
 
-    long position = find_hashtable(table,student.id);
-    //printf("%d",position);
-    student_t to_find;
+    unsigned int option = find_apply_hashtable(table,student.id, "done", lista);
 
-    long offset = sizeof(struct student)*position;
-    fseek(table->ref, offset, SEEK_SET);
-    fread(&to_find, sizeof(struct student), 1, table->ref);
-
-    if (position==-1)
+    if (option == 0)    //sucesso
     {
-        printf("+ estudante %s inexistente\n",student.id);
     }
-    else if (to_find.done==true)
+    else if (option == -1)
     {
         printf("+ estudante %s terminou\n",student.id);
+        
     }
-    else if (to_find.left==true)
+    else if (option == -2)
     {
         printf("+ estudante %s abandonou\n",student.id);
     }
-    else
+    else if (option == -3)
     {
-        to_find.done=true;
-
-        fseek(table->ref, offset, SEEK_SET);
-        fwrite(&to_find, sizeof(struct student), 1, table->ref);
-
-        //printf("%d\n",to_find.country);
-        node_t *country_node = list_find(lista,to_find.country);
-        increment_of(country_node,"done");
-        decrement_of(country_node,"active");
-        //list_print_content(lista);
-
+        printf("+ estudante %s inexistente\n",student.id);
+        
     }
 }
 
 void set_leave(HashTable_t *table,list_t *lista,student_t student)
 {
-    long position = find_hashtable(table,student.id);
-    student_t to_find;
+    unsigned int option = find_apply_hashtable(table,student.id, "left", lista);
 
-    int offset = sizeof(struct student)*position;
-    fseek(table->ref, offset, SEEK_SET);
-    fread(&to_find, sizeof(struct student), 1, table->ref);
-
-    if (position==-1)
+    if (option == 0)    //sucesso
     {
-        printf("+ estudante %s inexistente\n",student.id);
     }
-    else if (to_find.done==true)
+    else if (option == -1)
     {
         printf("+ estudante %s terminou\n",student.id);
+        
     }
-    else if (to_find.left==true)
+    else if (option == -2)
     {
         printf("+ estudante %s abandonou\n",student.id);
     }
-    else
+    else if (option == -3)
     {
-        to_find.left=true;
-
-        long offset = sizeof(struct student)*position;
-        fseek(table->ref, offset, SEEK_SET);
-        fwrite(&to_find, sizeof(struct student), 1, table->ref);
-
-        node_t *country_node = list_find(lista,to_find.country);
-        increment_of(country_node,"left");
-        decrement_of(country_node,"active");
-        //list_print_content(lista);
+        printf("+ estudante %s inexistente\n",student.id);
         
     }
 }
 
 void get_stats_from(list_t *lista,char *country)
 {
-    sleep(5);
     node_t *country_node = list_find(lista,country);
     if (country_node==NULL)
     {
         printf("+ sem dados sobre %s\n",country);
-        sleep(2);
     }
     list_print(lista,country);
-    
-    
+        
 }
 
 void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
@@ -152,7 +116,7 @@ void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
     node_t *current_node = lista->header->next;
     int i=1;
 
-    //list_print_content(lista);
+    list_print_content(lista);
 
     
     while (current_node!=NULL)
@@ -171,8 +135,8 @@ void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
 
     ListMEM_saveSize(lista_MEM,i);
     //printf("size mem guardado:%d\n",i);
-    //lista_MEM->size=lista_MEM->size+1;
-    //ListMEM_printf(lista_MEM);
+    lista_MEM->size=lista_MEM->size+1;
+    ListMEM_printf(lista_MEM);
 
     free(current_node);
 

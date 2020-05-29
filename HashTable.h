@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "Lista.h"
 
 typedef struct hashTable{
     
@@ -32,7 +33,7 @@ long hash(char *str);
 long aux_func(int n);
 long position_process(HashTable_t *table,char *name);
 bool insert_hashtable(HashTable_t *table,student_t student);
-int find_hashtable(HashTable_t *table,char *id);
-int remove_hashtable(HashTable_t *table,char *id);
+int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *lista);
+//int remove_hashtable(HashTable_t *table,char *id);
 
 #endif

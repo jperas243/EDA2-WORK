@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "Lista.h"
 #include "Lista_MEM.h"
+
 
 country_t *newCountry()
 {
@@ -14,8 +14,9 @@ country_t *newCountry()
 }
 
 node_t *newNode(){
-    
-    node_t *new = malloc(sizeof(node_t));
+    node_t *new = NULL;
+    new = malloc(sizeof(node_t));
+    new->next = NULL;
     return new;
 }
 
