@@ -29,6 +29,8 @@ typedef struct student {
 }student_t;
 
 struct hashTable* new_HashTable(char file_name[21]);
+student_t clear_student(student_t n);
+
 
 long hash(char *str);
 long aux_func(int n);
