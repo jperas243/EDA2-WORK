@@ -10,9 +10,9 @@
 typedef struct country
 {
     char country_name[3]; 
-    long num_active_students, 
-        num_done_students,
-        num_left_students; 
+    unsigned int num_active_students, 
+    num_done_students,
+    num_left_students; 
 
 } country_t;
 

@@ -9,7 +9,7 @@
 
 void insert_student(HashTable_t *table,list_t *lista,student_t student)
 {
-    if(insert_hashtable(table,student)!=true)
+    if(insert_hashtable(table,student) == false)
     {
         printf("+ estudante %s existe\n",student.id);
     }
@@ -23,9 +23,7 @@ void insert_student(HashTable_t *table,list_t *lista,student_t student)
         else
         {
             increment_of(country_node,"active");
-        }
-        //list_print_content(lista);
-        
+        }   
     }
 }
 
@@ -115,10 +113,7 @@ void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
 {
     node_t *current_node = lista->header->next;
     int i=1;
-
-    //list_print_content(lista);
-
-    
+  
     while (current_node!=NULL)
     {
         country_t current_country = current_node->country;
@@ -134,13 +129,8 @@ void save_countries(Lista_MEM_t *lista_MEM, list_t *lista)
     lista_MEM->size=lista->size--;
 
     ListMEM_saveSize(lista_MEM,i);
-    //printf("size mem guardado:%d\n",i);
-    //lista_MEM->size=lista_MEM->size+1;
-    //ListMEM_printf(lista_MEM);
 
     free(current_node);
-
-
 }
 
 

@@ -13,15 +13,16 @@ country_t *newCountry()
     return new;
 }
 
-node_t *newNode(){
+node_t *newNode()
+{
     node_t *new = NULL;
     new = malloc(sizeof(node_t));
     new->next = NULL;
     return new;
 }
 
-list_t *newList(){
-    
+list_t *newList()
+{
     list_t *new = malloc(sizeof(list_t));
     new->header = newNode();
     new->size = 0;
@@ -29,8 +30,8 @@ list_t *newList(){
 }
 
 
-
-void list_print(list_t *list, char *cod) {
+//Escreve na consola a informacao de um dado pais
+void list_print(list_t *list, char *cod){
     
     node_t *current = newNode();
     current = list->header->next;
@@ -40,7 +41,7 @@ void list_print(list_t *list, char *cod) {
         {
             if (current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students!=0)
             {
-                printf("+ %s - correntes: %li, diplomados: %li, abandonaram: %li, total: %li\n",
+                printf("+ %s - correntes: %u, diplomados: %u, abandonaram: %u, total: %u\n",
                 cod, current->country.num_active_students, current->country.num_done_students, current->country.num_left_students,
                 current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students);
             }
@@ -57,13 +58,12 @@ void list_print(list_t *list, char *cod) {
 
 void list_print_all(list_t *list) {
     
-    printf("RAM:");
     node_t *current = list->header->next;
     while (current!=NULL)
     {
         if (current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students!=0)
         {
-            printf("+ %s - correntes: %li, diplomandos: %li, abandonaram: %li, total: %li\n",
+            printf("+ %s - correntes: %u, diplomandos: %u, abandonaram: %u, total: %u\n",
             current->country.country_name, current->country.num_active_students, current->country.num_done_students, current->country.num_left_students,
             current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students);
         }
@@ -78,10 +78,12 @@ void list_print_all(list_t *list) {
     free(current);
 }
 
+//Insere na lista em memora central um novo pais
 void list_insert(list_t *list, char *cod){
   
 
     node_t *new = newNode();
+
     strcpy(new->country.country_name,cod);
     new->country.num_active_students=1;
     new->country.num_done_students=0;
@@ -160,28 +162,9 @@ void list_print_content(list_t *lista)
 {
     node_t *current = lista->header->next;
 
-    printf("\nRAM:[");
     while (current!=NULL)
     {
         list_print(lista,current->country.country_name);
         current=current->next;
     }
-    printf("]\n");
-
 }
-
-/*
-
-int main(int argc, char const *argv[])
-{
-    list_t *list = newList();
-    
-    //printf("%d",list_search(list,"PT"));
-    list_insert(list, "PT");
-    node_t *ola = list_find(list,"PT");
-    printf("%s",ola->country.country_name);
-
-    //list_print(list, "PT");
-    return 0;
-}
-*/
