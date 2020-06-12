@@ -60,18 +60,3 @@ void ListMEM_saveSize(Lista_MEM_t *lista,int n)
 }
 
 
-void ListMEM_printf(Lista_MEM_t *lista)
-{
-    country_t current_country;
-
-    for(int i =1;i < lista->size;i++)
-    {
-        int offset = sizeof(struct country)*i;
-        fseek(lista->ref, offset, SEEK_SET);
-        fread(&current_country, sizeof(struct country), 1, lista->ref);
-
-        printf("+ %s - correntes: %li, diplomandos: %li, abandonaram: %li, total: %li\n",
-                current_country.country_name, current_country.num_active_students, current_country.num_done_students, current_country.num_left_students,
-                current_country.num_active_students+ current_country.num_done_students+current_country.num_left_students);
-    }
-}

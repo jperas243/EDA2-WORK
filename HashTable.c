@@ -9,9 +9,7 @@
 #include "Lista.h"
 
 #define SIZE 20000003
-#define INEXISTENTE -3
-#define ABANDONOU -2
-#define TERMINOU -1
+
 
 HashTable_t* new_HashTable(char file_name[21]){
     
@@ -164,14 +162,29 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
     fseek(table->ref, offset, SEEK_SET);
     fread(&atual, sizeof(struct student), 1, table->ref);   
 
+
     while (atual.invalid_position)
     {   
 
         if (strcmp(atual.id,id)==0)
         {
+            /* code */
             if (strcmp(option, "remove") == 0)
             { 
-                if (atual.left)
+                if (atual.removed) 
+                {
+                    if (atual.left)
+                    {
+                    return ABANDONOU; //abandonou o curso
+                    }
+                    if (atual.done) 
+                    {
+                    return TERMINOU; //terminou o curso
+                    }
+                    
+                    return INEXISTENTE;
+                }
+                else if (atual.left)
                 {
                     return ABANDONOU; //abandonou o curso
                 }
@@ -179,11 +192,7 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
                 {
                     return TERMINOU; //terminou o curso
                 }
-                else if (atual.removed)
-                {
-                    return INEXISTENTE; //aluno inexistente
-                }            
-                else    //existe e pode ser removido
+                else
                 {   
                     atual.removed = true;
 
@@ -192,7 +201,7 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
 
                     offset = sizeof(struct student)*position;
                     fseek(table->ref, offset, SEEK_SET);
-                    fwrite(&atual, sizeof(struct student), 1, table->ref);
+                    fwrite(&atual, sizeof(struct student), 1, table->ref);  //sucesso
                     atual=clear_student(atual);
                     return 0;
                 }
@@ -202,7 +211,21 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
             
             if (strcmp(option, "done") == 0)
             {
-               if (atual.left)
+               
+                if (atual.removed) 
+                {
+                    if (atual.left)
+                    {
+                    return ABANDONOU; //abandonou o curso
+                    }
+                    if (atual.done) 
+                    {
+                    return TERMINOU; //terminou o curso
+                    }
+                    
+                    return INEXISTENTE;
+                }
+                else if (atual.left)
                 {
                     return ABANDONOU; //abandonou o curso
                 }
@@ -210,11 +233,7 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
                 {
                     return TERMINOU; //terminou o curso
                 }
-                else if (atual.removed)
-                {
-                    return INEXISTENTE; //aluno inexistente
-                }            
-                else
+                else 
                 {
                     atual.done=true;
 
@@ -225,26 +244,36 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
                     offset = sizeof(struct student)*position;
                     fseek(table->ref, offset, SEEK_SET);
                     fwrite(&atual, sizeof(struct student), 1, table->ref);
+
                     return 0;
                 }
             }
             
             if (strcmp(option, "left") == 0)
             {
-                if (atual.left)
+                if (atual.removed) 
+                {
+                    if (atual.left)
+                    {
+                    return ABANDONOU; //abandonou o curso
+                    }
+                    if (atual.done) //atual.removed==true
+                    {
+                    return TERMINOU; //terminou o curso
+                    }
+                    
+                    return INEXISTENTE;
+                }
+                else if (atual.left)
                 {
                     return ABANDONOU; //abandonou o curso
                 }
-                else if (atual.done)
+                else if (atual.done) //atual.removed==true
                 {
                     return TERMINOU; //terminou o curso
                 }
-                else if (atual.removed)
-                {
-                    return INEXISTENTE; //aluno inexistente
-                }            
                 else
-                {   
+                {
                     atual.left=true;
                     node_t *current = list_find(lista, atual.country);
                     decrement_of(current,"active");
@@ -252,11 +281,13 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
                     
                     long offset = sizeof(struct student)*position;
                     fseek(table->ref, offset, SEEK_SET);
-                    fwrite(&atual, sizeof(struct student), 1, table->ref);                    
+                    fwrite(&atual, sizeof(struct student), 1, table->ref);
+                    
                     atual=clear_student(atual);
                     return 0;
-                }            
-            }
+                }
+            }            
+        }
 
         position=(save+aux_func(hash_aux_counter))%SIZE;
         hash_aux_counter++;
@@ -264,8 +295,11 @@ int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *list
         atual=clear_student(atual);
         offset = sizeof(struct student)*position;
         fseek(table->ref, offset, SEEK_SET);
-        fread(&atual, sizeof(struct student), 1, table->ref);       
-        }
-    return INEXISTENTE; //Quando encontrar uma posicao vazia: aluno inexistente
+        fread(&atual, sizeof(struct student), 1, table->ref);
+        
+
+
+        
     }
+    return INEXISTENTE; //aluno inexistente
 }

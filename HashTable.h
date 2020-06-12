@@ -10,6 +10,10 @@
 
 #include "Lista.h"
 
+#define INEXISTENTE -3
+#define ABANDONOU -2
+#define TERMINOU -1
+
 typedef struct hashTable{
     
     FILE *ref;
@@ -37,6 +41,5 @@ long aux_func(int n);
 long position_process(HashTable_t *table,char *name);
 bool insert_hashtable(HashTable_t *table,student_t student);
 int find_apply_hashtable(HashTable_t *table,char *id, char *option, list_t *lista);
-//int remove_hashtable(HashTable_t *table,char *id);
 
 #endif

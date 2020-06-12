@@ -41,6 +41,5 @@ void list_insert_node(list_t *list, struct node *country);
 struct node *list_find(list_t *list, char *cod);
 void increment_of(node_t *node,char *var);
 void decrement_of(node_t *node,char *var);
-void list_print_content(list_t *lista);
 
 #endif

@@ -56,27 +56,6 @@ void list_print(list_t *list, char *cod){
     }
 }
 
-void list_print_all(list_t *list) {
-    
-    node_t *current = list->header->next;
-    while (current!=NULL)
-    {
-        if (current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students!=0)
-        {
-            printf("+ %s - correntes: %u, diplomandos: %u, abandonaram: %u, total: %u\n",
-            current->country.country_name, current->country.num_active_students, current->country.num_done_students, current->country.num_left_students,
-            current->country.num_active_students+ current->country.num_done_students+current->country.num_left_students);
-        }
-        else
-        {
-            printf("+ sem dados sobre %s\n",current->country.country_name);
-        }
-        current=current->next;
-
-    }
-
-    free(current);
-}
 
 //Insere na lista em memora central um novo pais
 void list_insert(list_t *list, char *cod){
@@ -158,13 +137,3 @@ void decrement_of(node_t *node,char *var)
     }
 }
 
-void list_print_content(list_t *lista)
-{
-    node_t *current = lista->header->next;
-
-    while (current!=NULL)
-    {
-        list_print(lista,current->country.country_name);
-        current=current->next;
-    }
-}

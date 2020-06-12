@@ -5,8 +5,6 @@
 #include "HashTable.h"
 #include "Lista_MEM.h"
 
-
-
 void insert_student(HashTable_t *table,list_t *lista,student_t student)
 {
     if(insert_hashtable(table,student) == false)
@@ -34,16 +32,16 @@ void remove_student(HashTable_t *table,list_t *lista,student_t student)
     if (option == 0)    //sucesso
     {
     }
-    else if (option == -1)
+    else if (option == TERMINOU)
     {
         printf("+ estudante %s terminou\n",student.id);
         
     }
-    else if (option == -2)
+    else if (option == ABANDONOU)
     {
         printf("+ estudante %s abandonou\n",student.id);
     }
-    else if (option == -3)
+    else if (option == INEXISTENTE)
     {
         printf("+ estudante %s inexistente\n",student.id);
         
@@ -59,16 +57,16 @@ void set_done(HashTable_t *table,list_t *lista,student_t student)
     if (option == 0)    //sucesso
     {
     }
-    else if (option == -1)
+    else if (option == TERMINOU)
     {
         printf("+ estudante %s terminou\n",student.id);
         
     }
-    else if (option == -2)
+    else if (option == ABANDONOU)
     {
         printf("+ estudante %s abandonou\n",student.id);
     }
-    else if (option == -3)
+    else if (option == INEXISTENTE)
     {
         printf("+ estudante %s inexistente\n",student.id);
         
@@ -82,16 +80,16 @@ void set_leave(HashTable_t *table,list_t *lista,student_t student)
     if (option == 0)    //sucesso
     {
     }
-    else if (option == -1)
+    else if (option == TERMINOU)
     {
         printf("+ estudante %s terminou\n",student.id);
         
     }
-    else if (option == -2)
+    else if (option == ABANDONOU)
     {
         printf("+ estudante %s abandonou\n",student.id);
     }
-    else if (option == -3)
+    else if (option == INEXISTENTE)
     {
         printf("+ estudante %s inexistente\n",student.id);
         

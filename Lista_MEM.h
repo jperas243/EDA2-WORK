@@ -26,8 +26,6 @@ void ListMEM_insert(Lista_MEM_t *lista,struct node *pais);
 
 void ListMEM_send_to(Lista_MEM_t *lista,struct list *main_memory);
 
-void ListMEM_printf(Lista_MEM_t *lista);
-
 void ListMEM_saveSize(Lista_MEM_t *lista,int n);
 
 #endif 
